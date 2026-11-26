@@ -1,0 +1,22 @@
+{
+  "prior_commit": "39eaab7f8c646c78c636458d704efad043d14ac1",
+  "prior_zip_sha256": "25dc5ed43f01bb1df6637c4761814ea9192907bae68e5ee0349a9dba2c18492d",
+  "verification": {
+    "checks": {
+      "real_rational": 40,
+      "complex_rational": 40,
+      "commuting": 17,
+      "beta_calibrations": 306,
+      "volume_ratio_calibrations": 306
+    },
+    "max_beta_relative_error": 8.889008891177497e-06,
+    "max_volume_ratio_relative_error": 2.7977620220553945e-14,
+    "note": "Rational checks exact; beta/volume floating-point calibration, not proof."
+  },
+  "new_verifier_exit": 0,
+  "pdf_pages": 17,
+  "latex_passes": 2,
+  "status": "TECHNICAL_PASS",
+  "formal_scope": "original partial Lean evidence unchanged; new proofs analytical",
+  "academic_grade": "A-priority candidate, not independently certified"
+}
