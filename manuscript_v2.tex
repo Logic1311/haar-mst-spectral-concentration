@@ -1,0 +1,338 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1.05in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\diag}{\operatorname{diag}}
+\title{Spectral concentration and reciprocal spanning trees under Haar conjugation}
+\author{AI-assisted research manuscript\\\small Authorship and affiliations pending verification}
+\date{26 November 2026 --- revision 2}
+\begin{document}
+\maketitle
+\begin{abstract}
+Minimum spanning trees with inverse coupling strengths arise in state-transfer bounds for random bilinear quantum systems. We classify the leading normalized tree cost under complex Haar conjugation for arbitrary deterministic nonscalar spectra and fixed inverse power $0<q<2$. The limit is determined by the decreasing squared spectral mass partition, including diffuse mass; the constants range sharply from $1$ to $\Gamma(1-q/2)$. We prove a spectrum-uniform $L^1$ error of order $1/\log n$, sharp in the rank-one regime, and a uniform first-order mean bracket. Separately, at fixed dimension, for both real orthogonal and complex unitary conjugation we determine the exact power exponent of small couplings across each cut. The resulting tree-cost tail is governed by the largest eigenvalue multiplicity $m_{\max}$: the $p$th moment is finite precisely when $pq<\beta(n-m_{\max})$, with $\beta=1,2$ respectively. The proof compares small commutators to tubes around invariant subspaces, whose codimensions reduce to multipartite graph cuts. Rank one also admits an explicit critical normalization and a supercritical positive stable limit. We distinguish these results from the earlier bounded-spectrum reciprocal expansion, and from standard spherical laws and recursive-tree constructions. Partial formal and computational checks accompany the analytical proofs.
+\end{abstract}
+
+\section{Model, context, and results}
+Let $n\ge2$, let $\Lambda_n=\diag(\lambda_{n,1},\ldots,\lambda_{n,n})$ be a nonscalar deterministic real matrix, and let $U_n$ be Haar on $U(n)$. Put $H_n=U_n^*\Lambda_n U_n$. Write $l_{n,j}=\lambda_{n,j}-n^{-1}\sum_k\lambda_{n,k}$ and
+\[
+v_n=\frac1n\sum_j l_{n,j}^2>0,\qquad
+p_{n,j}=\frac{l_{n,j}^2}{nv_n}.
+\]
+We permute the spectrum so that the $p_{n,j}$ are decreasing and extend them by zero for $j>n$. This does not change the law of the conjugation. For $q>0$, let $M_{n,q}$ denote the minimum total weight of a spanning tree of the complete graph with symmetric costs $|H_{ij}|^{-q}$, $i\ne j$. All costs are finite almost surely, as shown below. Put $s=q/2$ and
+\begin{equation}
+R_i^2=\sum_{j\ne i}|H_{ij}|^2=(H^2)_{ii}-H_{ii}^2,\quad
+c_{n,s}=\E[(R_1^2/v_n)^{-s}],\quad
+X_{n,q}=\frac{(v_n\log n)^s}{n^{1+s}}M_{n,q}.
+\label{eq:normalization}
+\end{equation}
+The row energy $R_i^2$ is invariant under translation of the spectrum. No coupling of the randomness across dimensions is needed.
+
+The quantum-control formulation of Chambrion and Mendico \cite{CMcontrol,CMnumerical} bounds state-to-state transfer time by a constant times $M_{n,1}$ under the stated rational independence and isotropy assumptions. Their Theorem 11 and Remark 3 give a spectrum-independent path bound of order $n^{3/2}/\sqrt{v_n}$ in mean. Their shape analysis concerns individual coupling limits. The critical polynomial spectrum motivates their numerical conjectures; the AI-developed note \cite{IRSI} reports qualitative vanishing in that case. Ve\v{c}e\v{r} \cite{Vecer}, whose full textual theorem and proof were reviewed for this revision, already proves bounded-standardized-spectrum $L^1$ convergence for reciprocal costs (Theorem 4) and a finer expected-cost expansion (Theorem 2, Corollary 3). His Section 3 recursive tree and Lemmas 6--7 give conditional spherical laws and a spectrum-uniform upper and inverse-moment bound. We expressly credit these tools and do not claim the bounded case, logarithmic upper order, or classical one-entry laws as new. The proposed contributions are the unrestricted spectral-mass classification, sharp uniform error to a spectrum-dependent target, the exact cut and moment exponents at fixed dimension, and the rank-one transition. The prior-art audit documents scope and retrieval limits; no exhaustive priority claim is made.
+
+\begin{theorem}[Spectrum-uniform leading order and classification]\label{thm:main}
+Fix $0<q<2$, $s=q/2$. Uniformly over all nonscalar deterministic real spectra in dimension $n$,
+\begin{equation}
+\sup_{\Lambda_n}\E|X_{n,q}-c_{n,s}|\longrightarrow0.
+\label{eq:uniform}
+\end{equation}
+Suppose $p_{n,j}\to p_j$ for each fixed $j$, with $p_j\ge0$ decreasing and $\sum_jp_j\le1$. Let $E_j$ be independent exponential random variables of mean one. Then
+\begin{equation}
+ X_{n,q}\xrightarrow{L^1}C_s(p):=\E\left[\left(1-\sum_{j\ge1}p_j+\sum_{j\ge1}p_jE_j\right)^{-s}\right].\label{eq:classification}
+\end{equation}
+Every decreasing mass partition with sum at most one is attainable by some sequence of centered spectra. Moreover,
+\begin{equation}
+1\le C_s(p)\le\Gamma(1-s),\label{eq:constants}
+\end{equation}
+with equality on the left precisely when all $p_j=0$, and on the right precisely when $p_1=1$. Consequently $X_{n,q}\to1$ in $L^1$ if and only if $p_{n,1}\to0$, and $X_{n,q}\to\Gamma(1-s)$ in $L^1$ if and only if $p_{n,1}\to1$. The range in \eqref{eq:constants} is fully attained. For $q\ge2$, rank-one spectra already have infinite expected tree cost in each dimension, so the universal finite-mean range cannot be enlarged.
+\end{theorem}
+
+The normalization in \eqref{eq:normalization} is by the empirical spectral variance, not a Gaussian surrogate variance. For example, if $p=(1/r,\ldots,1/r,0,\ldots)$ with $r$ equal masses, then $C_s=r^s\Gamma(r-s)/\Gamma(r)$. At $q=1$, rank one gives $\sqrt\pi$, while diffuse spectra give $1$. The leading order is spectrum-dependent even after variance normalization. The proof requires only one-row conditional distributions and a two-column limit for the row energy average. Sections 7--9 establish the quantitative rate, the fixed-dimensional real/complex cut-tail theorem, and the critical rank-one transition, respectively.
+
+\section{A deterministic sandwich and spherical row laws}
+\begin{lemma}[Tree charging and hubs]\label{lem:tree}
+For a complete graph on $n$ vertices with finite symmetric positive costs $W_{ij}$, put $b_i=\min_{j\ne i}W_{ij}$ and let $M$ be its minimum spanning-tree cost. For any nonempty subset $K$ with $|K|=k<n$ and any $r\in K$,
+\begin{equation}
+\left(1-\frac1n\right)\sum_i b_i\le M\le
+\sum_{i\notin K}\min_{j\in K}W_{ij}+\sum_{j\in K\setminus\{r\}}W_{jr}=:T_K.
+\label{eq:tree}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Orient a spanning tree toward root $r$. Each vertex other than $r$ pays the cost of its unique edge toward the root, which is at least $b_i$; every tree edge is counted once. Average the resulting lower bound over all roots. For the upper bound attach each non-hub to a cheapest hub, and join the hubs by a star at $r$. The resulting graph is connected with $n-1$ edges, and each outside vertex is a leaf. Arbitrary deterministic tie-breaking suffices.
+\end{proof}
+
+\begin{lemma}[Exact conditional row law]\label{lem:row}
+With $m=n-1$, conditional on the $i$th Haar column $u_i$, the off-diagonal column of $H$ has law $R_i z$, where $z$ is uniform on the unit sphere of $\C^m$. The conditional law of $z$ does not depend on $u_i$, so it is independent of $R_i$. If $1\le k\le m$, set $B_{m,k}=\max_{j\le k}|z_j|^2$, and $D_k=\max_{j\le k} E_j$ for independent mean-one exponentials. For $0<s<1$,
+\begin{align}
+f_{m,k,s}:=\E B_{m,k}^{-s}&=\frac{\Gamma(m)}{\Gamma(m-s)}g_{k,s},\\
+g_{k,s}:=\E D_k^{-s}&=\Gamma(1-s)\sum_{j=1}^k(-1)^{j-1}\binom{k}{j} j^s.\label{eq:g}
+\end{align}
+\end{lemma}
+\begin{proof}
+The remaining columns form a conditional Haar orthonormal basis of $u_i^\perp$ by unitary invariance. The off-diagonal coordinates are those of $(I-u_iu_i^*)\Lambda_n u_i$ in that basis; their radius is $R_i$. A nonscalar Hermitian matrix has proper eigenspaces, hence $R_i>0$ almost surely. A coordinate of a uniform complex sphere vector is nonzero almost surely, including $m=1$. Thus every edge cost is finite almost surely. Gaussian normalization gives squared coordinates $(E_j/S_m)_{j=1}^m$ with $S_m=\sum E_j\sim\mathrm{Gamma}(m,1)$. The gamma-to-simplex change of variables shows independence of these coordinates and $S_m$. Since $D_k=S_mB_{m,k}$, their negative moments factor; the factorization holds for any exponent $a<\min(k,m)$ with $a>0$. Expansion of the density $ke^{-t}(1-e^{-t})^{k-1}$ and the gamma integral yield \eqref{eq:g} for $0<s<1$.
+\end{proof}
+
+\begin{corollary}[Finite-dimensional expectation bounds]\label{cor:sandwich}
+For $0<s<1$ and $1\le k\le n-1$,
+\begin{equation}
+(n-1)f_{m,m,s}\E R_1^{-2s}\le\E M_{n,q}\le
+\bigl[(n-k)f_{m,k,s}+(k-1)f_{m,1,s}\bigr]\E R_1^{-2s}.
+\label{eq:finite}
+\end{equation}
+\end{corollary}
+The inverse-radius integrability below ensures all terms are finite. Conditional factorization in Lemma \ref{lem:row} and permutation invariance applied to each of the sums in \eqref{eq:tree} prove the corollary. There is no assertion that different rows, or the edges chosen by different leaves, are independent. The exact dependence on spectrum factors out of both bounds.
+
+\section{Uniform control of singular inverse moments}
+The projected variance identity and the uniform inverse-moment bound below are also in \cite{CMcontrol} and \cite[Lemma 7, (19)]{Vecer}; they are retained to make the proof self-contained.
+\begin{lemma}\label{lem:inverse}
+For each fixed $0<a<1$,
+\begin{equation}
+\E[(R_i^2/v_n)^{-a}]\le n^{-2a}\frac{\Gamma(n)\Gamma(1-a)^2}{\Gamma(n-2a)}\le C_a<\infty,\label{eq:negative}
+\end{equation}
+where $C_a$ is independent of $n\ge2$ and of the nonscalar real spectrum. Also $\E R_i^2/v_n=n/(n+1)$.
+\end{lemma}
+\begin{proof}
+Set $w_j=|u_{ji}|^2$, a Dirichlet$(1,\ldots,1)$ vector. The weighted-variance identity, with the centered eigenvalues, gives
+\begin{equation}
+R_i^2=\sum_j w_jl_j^2-\left(\sum_jw_jl_j\right)^2
+=\sum_{j<k}w_jw_k(l_j-l_k)^2.
+\end{equation}
+The sum of the unweighted squared differences is $n^2v_n$. Thus $R_i^2/v_n$ is a convex combination of the positive random variables $n^2w_jw_k$ with deterministic weights $(l_j-l_k)^2/(n^2v_n)$. Apply Jensen to $t^{-a}$ and integrate using the Dirichlet density. For two distinct coordinates the integral of $(w_jw_k)^{-a}$ is $\Gamma(n)\Gamma(1-a)^2/\Gamma(n-2a)$, also for $n=2$. Stirling's formula proves the uniform bound. Using the Dirichlet first and second moments gives $\E\sum w_jl_j^2=v_n$ and $\E(\sum w_jl_j)^2=v_n/(n+1)$, which proves the mean identity.
+\end{proof}
+For fixed $s<1$ choose $a\in(s,1)$. Lemma \ref{lem:inverse} gives a uniform $L^{a/s}$ bound for $V_i=(R_i^2/v_n)^{-s}$, so their singular tails are uniformly integrable. Jensen also gives $c_{n,s}\ge (1+1/n)^s$. The projected variance identity and the inverse-square-root Jensen argument already appear in \cite{CMcontrol}; here they provide the necessary uniform integrability at general exponents, not a claim of novelty for the classical identities themselves.
+
+\section{From rows to the full tree in \texorpdfstring{$L^1$}{L1}}
+\begin{lemma}[Inverse maxima]\label{lem:max}
+For fixed $b>0$, $\E D_k^{-b}=O_b((\log k)^{-b})$ as $k\to\infty$. If $m=n-1$, $k\le m$, and $\log k/\log n\to1$, then for fixed $0<s<1$,
+\begin{equation}
+\E\left|\left(\frac{\log n}{m}\right)^s B_{m,k}^{-s}-1\right|\to0.\label{eq:rowL1}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $0<\delta<1$, the probabilities of $D_k>(1+\delta)\log k$ and $D_k<(1-\delta)\log k$ are bounded by $k^{-\delta}$ and $\exp(-k^\delta)$ respectively. Thus $D_k/\log k\to1$ in probability. For $k>b$, the inverse-moment integral is
+\[
+\E D_k^{-b}=b\int_0^\infty t^{-b-1}(1-e^{-t})^k\,dt.
+\]
+For large $k$, split at $1/2$ and $(\log k)/2$. On the first interval use $(1-e^{-t})^k\le t^k$; its contribution is at most $b(1/2)^{k-b}/(k-b)$. On the middle interval the distribution is at most $e^{-\sqrt{k}}$, so the contribution is at most $2^b e^{-\sqrt{k}}$. The last integral is bounded by $(2/\log k)^b$. This handles arbitrarily small maxima. The spherical representation implies convergence in probability of the expression inside \eqref{eq:rowL1} before subtracting $1$, because $S_m/m\to1$ and $D_k/\log n\to1$. For fixed $p>1$ the gamma-to-simplex factorization and the bound just proved with $b=sp$ give a bounded $p$th moment for large $k,m$. Hence convergence holds in $L^1$.
+\end{proof}
+
+Put $a_n=(m/\log n)^s$ and $Q_n=a_n\sum_iR_i^{-2s}$. Choose a deterministic hub set of size $k=\max(1,\min(n-1,\lfloor n/(\log n)^2\rfloor))$. In particular, $k/n\to0$, $\log k/\log n\to1$, and $(k/n)(\log n)^s\to0$. Let $L_n$ and $T_K$ be the bounds in \eqref{eq:tree}, for $W_{ij}=|H_{ij}|^{-2s}$. In a given realization the row minimum is $R_i^{-2s}$ times the inverse $s$th power of the largest squared coordinate of its normalized row. Denote by $\epsilon_{n,k}$ the expectation in \eqref{eq:rowL1}, which depends on dimension and exponent, but not on spectrum. The triangle inequality and Lemma \ref{lem:row} give
+\begin{align}
+\frac{\E|L_n-Q_n|}{\E Q_n}&\le \epsilon_{n,m}+\frac1n,\label{eq:lowerr}\\
+\frac{\E|T_K-Q_n|}{\E Q_n}&\le\epsilon_{n,k}+\frac{k}{n}+\frac{k-1}{n}\frac{f_{m,1,s}}{a_n}.\label{eq:upperr}
+\end{align}
+Indeed for each outside vertex replace its selected hub edge by the corresponding radius surrogate; the omitted hub radius contributions cost $k/n$ in mean. The hub star contributes $(k-1)\E R_1^{-2s} f_{m,1,s}$. Since $g_{1,s}=\Gamma(1-s)$, the last ratio in \eqref{eq:upperr} is $O_s((\log n)^s)$. Both errors vanish uniformly. The deterministic inequality
+\[
+|M_{n,q}-Q_n|\le |L_n-Q_n|+|T_K-Q_n|
+\]
+then proves, using Lemma \ref{lem:inverse},
+\begin{equation}
+\sup_{\Lambda_n}\E\left|X_{n,q}-\left(\frac{m}{n}\right)^s\frac1n\sum_i V_i\right|\to0.
+\label{eq:surrogate}
+\end{equation}
+The result does not require a connectivity threshold for a correlated graph. The selected hubs are only a proof construction, not a statement about the actual topology of the optimal tree.
+
+\section{Spectral masses and two-column asymptotic independence}
+Suppose $p_{n,j}\to p_j$ coordinatewise. For iid mean-one exponentials on a common auxiliary probability space set
+\[
+ T_n=\sum_jp_{n,j}E_j,\qquad T=1+\sum_jp_j(E_j-1)=1-\sum_jp_j+\sum_jp_jE_j.
+\]
+For each $K$, the first $K$ coefficients converge; the tail squares obey $\sum_{j>K}p_{n,j}^2\le1/(K+1)$, since $p_{n,K+1}\le1/(K+1)$ and the masses sum to one. The same bound holds for $p$. Orthogonality of the centered exponentials therefore gives $T_n\to T$ in $L^2$. The nonnegative series defining $T$ converges almost surely by its finite mean, and $T>0$ almost surely. Its expectation is $1$.
+
+\begin{lemma}[Joint row-energy limit]\label{lem:pair}
+Along such a spectral subsequence the pair $(R_1^2/v_n,R_2^2/v_n)$ converges in distribution to two independent copies of $T$.
+\end{lemma}
+\begin{proof}
+Write $P=\diag(p_{n,j})$. For a Haar column $x$,
+\begin{equation}
+ R(x)^2/v_n=n x^*Px-(x^*\diag(l)x)^2/v_n.
+\label{eq:correction}
+\end{equation}
+The nonnegative correction in \eqref{eq:correction} has expectation $1/(n+1)$ by the Dirichlet moments. For independent standard complex Gaussian vectors $g,h$, take $x=g/\|g\|$, $a=x^*h$, and $y=(h-xa)/\|h-xa\|$. These are the first two Haar columns by the Gaussian orthonormalization construction \cite{Meckes}. Conditional on $x$, $a$ is standard complex normal, hence $|a|=O_{\Pp}(1)$. Also $\E x^*Px=1/n$ and $\E h^*Ph=1$. Cauchy--Schwarz in the positive semidefinite form $P$ implies
+\begin{align*}
+&|(h-xa)^*P(h-xa)-h^*Ph|\\
+&\qquad\le2|a|\sqrt{x^*Px}\sqrt{h^*Ph}+|a|^2 x^*Px=o_{\Pp}(1).
+\end{align*}
+Since $\|h-xa\|^2/n=(\|h\|^2-|a|^2)/n\to1$ and $\|g\|^2/n\to1$ in probability, the terms $nx^*Px,ny^*Py$ differ in probability by $o(1)$ from $g^*Pg,h^*Ph$. The latter are independent and each has law $T_n$. Their joint convergence to independent copies of $T$, the marginal correction bound, and Slutsky's theorem prove the assertion. This proof uses $\operatorname{tr}P=1$ and does not assume $\|\Lambda_n\|/\sqrt{v_n}$ bounded.
+\end{proof}
+
+\begin{proof}[Completion of the concentration assertion]
+For $B>0$ let $h_B(t)=\min(B,t^{-s})$, with $h_B(0)=B$. The function is bounded continuous on $[0,\infty)$. By Lemma \ref{lem:pair} the expectation of $h_B(R_1^2/v_n)$ converges to $\E h_B(T)$ and the covariance of two different truncated rows converges to zero. Permutation invariance shows that the variance of their empirical average is the single-row variance divided by $n$ plus $(n-1)/n$ times the two-row covariance. It tends to zero. Lemma \ref{lem:inverse} gives uniformly small $L^1$ truncation error as $B\to\infty$; weak convergence and the same moment bound also give $c_{n,s}\to\E T^{-s}$. Taking the limits in that order proves
+\[
+\frac1n\sum_i V_i\xrightarrow{L^1} C_s(p).
+\]
+Combine with \eqref{eq:surrogate} to obtain \eqref{eq:classification}. Every sequence of decreasing unit mass vectors has a coordinatewise convergent subsequence with limiting mass at most one, by diagonal compactness and finite partial sums. If \eqref{eq:uniform} failed, one could choose spectra along a subsequence with $\E|X_{n,q}-c_{n,s}|$ bounded below by a fixed positive number, then extract such a mass-partition subsequence. The preceding result and $c_{n,s}\to C_s(p)$ contradict this. Thus the convergence is spectrum-uniform.
+\end{proof}
+
+\section{Sharp constants, realizability and the integrability cutoff}
+For a mass partition $p$, put $d=1-\sum p_j$. By strict Jensen and $\E T=1$,
+\[
+ C_s(p)\ge1,
+\]
+with equality precisely when $T$ is constant almost surely. Since $\operatorname{Var}T=\sum p_j^2$, this means $p=0$. For the opposite bound apply Jensen conditionally on the exponentials to the countable convex combination of $1$ with weight $d$ and $E_j$ with weights $p_j$:
+\[
+ C_s(p)\le d+\sum_jp_j\E E_j^{-s}=d+(1-d)\Gamma(1-s)\le\Gamma(1-s).
+\]
+Strict Jensen for one exponential gives $\Gamma(1-s)>1$. If $d>0$ the last inequality is strict. If $d=0$ and at least two weights are positive, their exponentials differ almost surely, so the first inequality is strict. Countable Jensen is legitimate because the conditional means and negative moments are finite almost surely by Tonelli. Equality on the upper side is exactly the single full spike.
+
+A useful integral representation, by the gamma integral and Tonelli, is
+\begin{equation}
+ C_s(p)=\frac1{\Gamma(s)}\int_0^\infty t^{s-1}e^{-dt}\prod_{j\ge1}(1+p_jt)^{-1}\,dt.
+\label{eq:integral}
+\end{equation}
+The infinite product converges for finite $t$ because $\sum p_j\le1$. Equal $r$ spikes give $T\sim\mathrm{Gamma}(r,1)/r$ and the formula in the introduction. For one partial spike of size $u\in[0,1]$, $T=1-u+uE_1$. The constant depends continuously on $u$ by dominated convergence: for $u\le1/2$ use $T^{-s}\le2^s$, and for $u\ge1/2$ use $T^{-s}\le2^s E_1^{-s}$. It is strictly convex as a function of $u$, with strict minimum at zero, hence strictly increasing. Thus the whole interval is attained.
+
+To see that every mass partition is realizable, take $K=\lfloor\sqrt n\rfloor$, put $b_j=\sqrt{p_j}$ for $j\le K$, and use $n-K$ equal-magnitude tail entries of magnitude $\sqrt{(1-\sum_{j\le K}p_j)/(n-K)}$ with as nearly balanced signs as possible. Then $\sum b_j^2=1$, and subtracting the mean loses at most $(\sqrt K+1)^2/n=o(1)$ in squared norm. Each coordinate changes by $o(1)$, while all tail coordinates vanish uniformly. After rescaling to unit squared norm, the sorted squared magnitudes converge to $p_j$ at each fixed index: every fixed positive mass is approached by its head entry, while the remaining squared magnitudes are bounded by the corresponding small tail head masses plus $o(1)$. The finite initial dimensions can be chosen nonscalar arbitrarily. This proves realizability with centered spectra.
+
+If $p_{n,1}\to0$, all coordinatewise limits vanish, and the subsequence criterion proves the asserted $L^1$ limit. Conversely if the largest mass does not vanish, a subsequence has limit $p_1>0$ and a strictly larger constant. The argument for the upper endpoint is identical using the equality classification. Finally, for $q\ge2$ take $\Lambda_n=\diag(1,0,\ldots,0)$. Then $H=zz^*$ for a Haar unit vector. Every spanning tree has an edge incident to each given $i$; its cost is at least $|z_i|^{-q}$ since $|z_j|\le1$. The squared coordinate is Beta$(1,n-1)$, whose negative moment of order $q/2\ge1$ diverges. This proves the universal integrability cutoff. In the rank-one case the star rooted at a largest amplitude $|z_*|$ is exactly optimal by rooted charging, and its cost is
+\[
+ \frac{\sum_i|z_i|^{-q}-|z_*|^{-q}}{|z_*|^q}.
+\]
+This completes the proof of Theorem \ref{thm:main}.
+
+\section{Sharp spectrum-uniform convergence rate}\label{sharp-spectrum-uniform-convergence-rate}
+
+\begin{theorem}[Sharp uniform rate] Fix \(s=q/2\) in \((0,1)\) and write \(L=\log n\). Put \(T_n=\sum_{j=1}^n p_{n,j} E_j\) for independent mean-one exponentials, and \(a_{n,s}=\mathbb E T_n^{-s}\). There are constants depending only on \(s\) such that, for sufficiently large \(n\),
+
+\[\sup_{\Lambda_n}\mathbb E|X_{n,q}-c_{n,s}|\le C_s/L,\qquad \sup_{\Lambda_n}\mathbb E|X_{n,q}-a_{n,s}|\le C_s/L.\]
+
+Both supremum errors are bounded below by a positive constant depending only on \(s\) times \(1/L\) for sufficiently large \(n\). More precisely, with \(\gamma\) the Euler constant, there is a constant \(C_s\) such that every spectrum satisfies
+
+\[1-s\gamma/L-C_s/L^2 \le \mathbb E X_{n,q}/c_{n,s}\le 1+s(1-\gamma)/L+C_s/L^2.\]
+
+For a rank-one spectrum, \(\mathbb E X_{n,q}/c_{n,s}=1-s\gamma/L+O_s(L^{-2})\). \end{theorem}
+
+Neither this statement nor the mean bracket is an exact first-correction coefficient for general spectra. In the bounded standardized-spectrum regime, Ve\v{c}e\v{r} already gives a stronger expansion of the expected MST for \(q=1\) (Theorem 2, Corollary 3). The recursive construction and the conditional law are explicitly Section 3 and Lemma 6 of \cite{Vecer}, and Lemma 7(19) of \cite{Vecer} already provides the spectrum-uniform inverse-radius bound used below.
+
+\subsection{Quantitative row maxima and recursive comparison}\label{quantitative-row-maxima-and-recursive-comparison}
+
+Set \(m=n-1\), \(D_k=\max_{1\le j\le k}E_j\), \(S_m=\sum_{j=1}^m E_j\), \(B_{m,k}=D_k/S_m\). The gamma-to-simplex factorization and negative-moment estimate above give \(\mathbb E[(\log k/D_k)^b]\le C_b\) for each fixed \(b>0\) and sufficiently large \(k\). For \(t\ge0\), the upper tail of \(D_k-\log k\) is at most \(e^{-t}\). The lower tail is at most \(\exp(-e^t)\) for \(0\le t\le\log k\), and zero thereafter. These bounds give a uniformly bounded second moment of \(D_k-\log k\). The event \(D_k<\frac12\log k\) has probability at most \(\exp(-\sqrt k)\). On its complement the mean value theorem bounds \(|(D_k/\log k)^{-s}-1|\) by \(C_s|D_k-\log k|/\log k\); on the exceptional event Cauchy--Schwarz and the negative-moment bound control the expectation. Thus \(\mathbb E| (\log k/D_k)^s-1|=O_s(1/\log k)\).
+
+For \(0<s<1\), \(|x^s-1|\le|x-1|^s\) for \(x\ge0\) by subadditivity of \(x^s\). Hence \(\mathbb E|(S_m/m)^s-1|^2\le m^{-s}\). Cauchy--Schwarz with the preceding inverse-maximum bound, without assuming independence of \(S_m,D_k\), yields
+
+\[\mathbb E| (\log k/m)^s B_{m,k}^{-s}-1|=O_s(1/\log k +m^{-s/2}).\]
+
+For \(k\ge\sqrt n\) multiply by \((\log n/\log k)^s\); the resulting error \(\epsilon_{n,k}=\mathbb E|(\log n/m)^s B_{m,k}^{-s}-1|\) is bounded by \(C_s[(1+\log(n/k))/L+m^{-s/2}]\). For \(k<\sqrt n\), use monotonicity of \(B_{m,k}\) in \(k\) and its one-coordinate moment to get \(\epsilon_{n,k}\le C_s(1+L^s)\). The sum of \(\log(n/k)\) for \(1\le k\le m\) is at most \(n\) (right Riemann sum for the decreasing function \(-\log x\)); therefore \(n^{-1}\sum_{k=1}^m\epsilon_{n,k}=O_s(1/L)\), as is \(\epsilon_{n,m}\).
+
+Use the recursive tree in \cite{Vecer}: for vertex \(i\ge2\) attach to the cheapest edge going to an earlier label. Labels decrease strictly along parents, so the result is a tree. With \(Q_n=(m/L)^s\sum_iR_i^{-2s}\), the averaged rooted lower bound \(L_n\) proved above and this upper bound \(U_n^{rec}\) satisfy, by conditional factorization and the triangle inequality,
+
+\[\frac{\mathbb E|L_n-Q_n|}{\mathbb E Q_n}\le\epsilon_{n,m}+1/n,\quad \frac{\mathbb E|U_n^{rec}-Q_n|}{\mathbb E Q_n}\le\frac1n+\frac1n\sum_{k=1}^m\epsilon_{n,k}.\]
+
+Since \(L_n\le M_{n,q}\le U_n^{rec}\) pathwise, the error of \(M_{n,q}\) is bounded by the sum of the two errors. Using the uniformly bounded inverse-radius mean proved above, this proves an \(O_s(1/L)\) bound for \(\mathbb E|X_{n,q}-(m/n)^s\overline V_n|\), where \(\overline V_n=n^{-1}\sum_i(R_i^2/v_n)^{-s}\).
+
+\subsection{Quantitative two-column self-averaging}\label{quantitative-two-column-self-averaging}
+
+Write \(P=\mathrm{diag}(p_{n,j})\), \(\mathrm{tr}P=1\). Take independent complex standard Gaussian vectors \(g,h\), \(x=g/\|g\|\), \(a=x^*h\), \(z=h-xa\), \(y=z/\|z\|\). These are two Haar columns. Let \(Z_i=R_i^2/v_n\), and \(T^g=g^*Pg,T^h=h^*Ph\) (independent, each with law \(T_n\)).
+
+For the first column, \(g^*Pg=(\|g\|^2/n)nx^*Px\). Gaussian radius and direction are independent and \(\mathbb E(nx^*Px)=1\). Consequently \(\mathbb E|nx^*Px-g^*Pg|\le n^{-1/2}\). Conditional on \(x\), the projected Gaussian \(z\) has independent radius and direction in dimension \(n-1\). Its squared radius \(S'\) has \(\operatorname{Gamma}(n-1,1)\) law independent of \(x\), hence independent of \(y\). With \(\mathbb E(ny^*Py)=1\), \(\mathbb E|ny^*Py-z^*Pz|\le n^{-1/2}\), since \(\mathbb E(1-S'/n)^2=1/n\).
+
+PSD Cauchy--Schwarz gives \[|z^*Pz-h^*Ph|\le 2|a|\sqrt{x^*Px}\sqrt{h^*Ph}+|a|^2x^*Px.\] Conditional on \(x\), \(\mathbb E|a|^2=1\), so \(\mathbb E[|a|^2x^*Px]=1/n\); also \(\mathbb E h^*Ph=1\). Applying ordinary Cauchy--Schwarz to the first term gives \(2n^{-1/2}\), and the second has mean \(1/n\). Each centered diagonal correction between \(nx^*Px\) and \(Z_i\) has mean \(1/(n+1)\) by the original Dirichlet second moments. Consequently \[\mathbb E|Z_1-T^g|+\mathbb E|Z_2-T^h|\le C n^{-1/2}\] with an absolute constant, uniformly in spectrum.
+
+For \(B\ge1\), set \(h_B(t)=\min(B,t^{-s})\), \(h_B(0)=B\). This is bounded by \(B\) and globally Lipschitz with constant \(s B^{1+1/s}\). Coupling both truncated variables to the independent \(h_B(T^g),h_B(T^h)\) gives \[|\mathrm{Cov}(h_B(Z_1),h_B(Z_2))|\le C_s B^{2+1/s}n^{-1/2}.\] Indeed the joint product and the product of the two marginal means each differ from their independent analogues by at most \(B\) times the sum of the two mean coupling errors. Permutation invariance gives empirical variance at most \(B^2/n+C_s B^{2+1/s}/\sqrt n\). For \(a_0=(1+s)/2\), the uniform inverse-radius estimate supplies \(\mathbb E Z_i^{-a_0}\le C_s\). Jensen applied to the weighted sum \(T_n\) gives \(\mathbb E T_n^{-a_0}\le\Gamma(1-a_0)\). Each truncation error is at most \(C_s B^{-(a_0/s-1)}\). Thus \[\mathbb E|\overline V_n-c_{n,s}|\le C_s B^{-(a_0/s-1)} + [B^2/n+C_s B^{2+1/s}/\sqrt n]^{1/2},\] \[|c_{n,s}-a_{n,s}|\le C_s B^{-(a_0/s-1)} + C_s B^{1+1/s}/\sqrt n.\] Take \(B=n^{s/[8(2s+1)]}\). The two bounds are \(O_s(n^{-\eta_s})\) with \(\eta_s=(1-s)/[16(2s+1)]>0\); the variance square root is \(O_s(n^{-3/16})\), and the untruncated coupling term decays faster than \(n^{-\eta_s}\). Combining the recursive comparison, \(|(m/n)^s-1|=O_s(1/n)\), and bounded means proves the two quantitative uniform assertions. This does not assert independence of all rows or any fluctuation law.
+
+\subsection{Uniform mean bracket and sharpness of the rate}\label{uniform-mean-bracket-and-sharpness-of-the-rate}
+
+Let \(g_{k,s}=\mathbb E D_k^{-s}\) and \(f_{m,k,s}=\Gamma(m)g_{k,s}/\Gamma(m-s)\). Exact finite-dimensional expectation comparison (conditional factorization) now gives \[ (n-1)f_{m,m,s}\mathbb E R_1^{-2s}\le\mathbb E M_{n,q}\le \mathbb E R_1^{-2s}\sum_{k=1}^m f_{m,k,s}.\] The upper bound is the recursive comparison of \cite{Vecer} extended to these powers. A direct Taylor estimate gives \[g_{k,s}=(\log k)^{-s}\{1-s\gamma/\log k+O_s((\log k)^{-2})\}.\] To justify the coefficient, \(\mathbb E D_k=\sum_{i=1}^k 1/i\), by integrating its survival function, using \(u=e^{-t}\), and expanding \([1-(1-u)^k]/u\) as a finite geometric sum. Hence \(\mathbb E(D_k-\log k)=\gamma+O(1/k)\). On \(D_k\ge\frac12\log k\) the second derivative of \(x^{-s}\) at \(x=D_k/\log k\) along the Taylor segment is bounded by \(C_s\). The bounded second moment and the exponentially small exceptional tail (with the inverse moments as in the row-maxima estimate) justify the expansion. For \(k\ge\sqrt n\) put \(b=\log(n/k)\), expand \((1-b/L)^{-s}\) to order \(b/L\) with error \(O_s(b^2/L^2)\), and use \(1/\log k=1/L+O(b/L^2)\). The average of \(b\) tends to one with error \(O(L/n)\) by integral comparison (or Stirling); the average of \(b^2\) is at most two by the same decreasing-function bound. Terms \(k<\sqrt n\) contribute \(O_s(n^{-1/2}L^s)\) after normalization. Thus \(L^s n^{-1}\sum_{k=1}^{m}g_{k,s}=1+s(1-\gamma)/L+O_s(L^{-2})\). The lower bound has \(L^s g_{m,s}=1-s\gamma/L+O_s(L^{-2})\). Finally \(\Gamma(m)/[n^s\Gamma(m-s)]=1+O_s(n^{-1})\) by the gamma-ratio asymptotic. This proves the bracket, with constants independent of spectrum.
+
+For a rank-one matrix \(H=\lambda z z^*\) with uniform complex unit vector \(z\), a largest amplitude vertex is a star hub minimizing every other vertex's incident edge. The optimum is exactly the sum of the row minima except for that hub. Hence it is also bounded above by the sum of all row minima, whose expectation differs from the averaged rooted lower bound by only a factor \(n/(n-1)\). The resulting first mean correction is \(-s\gamma c_{n,s}/L\) as claimed. Since \(c_{n,s}\ge1\) and \(\gamma>0\), the expectation difference is bounded below in absolute value by a positive multiple of \(1/L\) for all large \(n\). Jensen then gives a matching lower bound on the uniform \(L^1\) error; the rate for the explicit target \(a_{n,s}\) is sharp as well because its difference from \(c_{n,s}\) is polynomially small. This does not identify the coefficient for non-rank-one spectra.
+
+\section{Exact cut tails and moment thresholds}\label{exact-cut-tails-and-moment-thresholds}
+
+\begin{theorem}[Exact cut and cost tail exponents] Fix \(n\ge2\) and a nonscalar real diagonal spectrum, with distinct eigenvalues \(\theta_1,\ldots,\theta_d\) of multiplicities \(m_1,\ldots,m_d\) (sum \(n\)). Let \(\mathbb F=\mathbb R\) or \(\mathbb C\), with real field dimension \(\beta=1\) or \(2\) respectively, and conjugate by a Haar orthogonal or unitary matrix. For any cut \(I\) of size \(k\), \(1\le k<n\), put \(B_I=\max_{i\in I,j\notin I}|H_{ij}|\). Define \[d_k=\min_{0\le r_i\le m_i,\,r_i\in\mathbb Z,\,\sum r_i=k}\left[k(n-k)-\sum_i r_i(m_i-r_i)\right].\] Then \(\mathbb P(B_I\le\epsilon)=\Theta_{n,\Lambda}(\epsilon^{\beta d_k})\) as \(\epsilon\downarrow0\) (constants may depend on \(k\) and field). There is an explicit computation of \(d_k\): arrange the \(n\) numbers \(m_i-1,m_i-3,\ldots,1-m_i\) over all groups in decreasing order \(g_1\ge\cdots\ge g_n\). Then \(d_k=k(n-k)-\sum_{j=1}^k g_j\).
+
+Let \(\delta=n-\max_i m_i\ge1\). The minimum of \(d_k\) over nontrivial \(k\) equals \(\delta\). For every fixed \(q>0\), the MST cost has a two-sided tail estimate \[\mathbb P(M_{n,q}>t)=\Theta_{n,\Lambda,q}(t^{-\beta\delta/q})\quad(t\to\infty).\] For every \(p>0\) this gives the exact moment criterion \[\mathbb E M_{n,q}^{p}<\infty \quad\Longleftrightarrow\quad p q<\beta(n-\max_i m_i).\] In particular, in the complex case \(\mathbb E M_{n,q}\) is finite exactly for \(q<2\delta\), and in the real case for \(q<\delta\). \end{theorem}
+
+The criterion is at fixed spectrum and dimension; constants need not be uniform as eigenvalues coalesce, or as dimension grows. The theorem does not claim an unrestricted high-dimensional asymptotic beyond the range of A.
+
+\subsection{Cut geometry and explicit projection rounding}\label{cut-geometry-and-explicit-projection-rounding}
+
+For the cut \(I\), let \(P_I\) project onto its coordinate subspace and \(P=U P_I U^*\), a uniform rank-\(k\) orthogonal projection over the field. The cross block of \(H=U^*\Lambda U\) is unitarily equivalent to the block \((I-P)\Lambda P\). Its Frobenius norm \(F\) satisfies \(B_I\le F\le\sqrt{k(n-k)} B_I\). Furthermore \(\|[\Lambda,P]\|_F^2=2F^2\) from the orthogonal decomposition into range and kernel of \(P\). Its zero set \(Z\) is exactly the commuting rank-\(k\) projections.
+
+Let \(D\) denote block diagonal projection in the orthogonal decomposition into distinct eigenspaces of \(\Lambda\), \(Q=D(P)\), and \(E=P-Q\). Put \(e=\|E\|_F\), \(g=\min_{a\ne b}|\theta_a-\theta_b|>0\). Since \([\Lambda,P]_{ab}=(\theta_a-\theta_b)P_{ab}\), \(e\le \|[\Lambda,P]\|_F/g\). The matrix \(Q\) is a Hermitian positive contraction. Applying \(D\) to \(P^2=P\) shows \(Q-Q^2=D(E^2)\): the two mixed products have zero diagonal blocks. Hence \(\|Q-Q^2\|_F\le\|E^2\|_F\le e^2\). Round each block of \(Q\) spectrally at \(1/2\) to obtain a block-diagonal projection \(P_0\). For \(0\le u\le1\), \(|u-\mathbf 1_{u>1/2}|\le2u(1-u)\), so \(\|Q-P_0\|_F\le2e^2\). Thus \(\|P-P_0\|_F\le e+2e^2\). If \(e<1/4\) then this is strictly less than one, also in operator norm. Two orthogonal projections of different ranks have operator-norm distance at least one: a larger range contains a nonzero vector orthogonal to the smaller range. Therefore \(P_0\) has rank \(k\) and belongs to \(Z\). For sufficiently small \(F\), distance to \(Z\) in the ambient Frobenius norm is at most \(C_{\Lambda}F\). Conversely for any \(P_0\in Z\), \(\|[\Lambda,P]\|_F=\|[\Lambda,P-P_0]\|_F\le2\|\Lambda\|_{op}\|P-P_0\|_F\); the infimum over \(P_0\) proves the other inequality. This yields two-sided local linear comparison, without a generic-spectrum or regular-value assumption.
+
+\subsection{Tube volume and all cut exponents}\label{tube-volume-and-all-cut-exponents}
+
+A commuting projection preserves each eigenspace: \(P_0\) is precisely the direct sum of projections of ranks \(r_i\), \(0\le r_i\le m_i\), \(\sum r_i=k\). The rank-\(k\) Grassmann manifold \(G_{\mathbb F}(k,n)\) has real dimension \(\beta k(n-k)\), as seen by graph-of-linear-map charts. For each such tuple the commuting locus is a smooth compact embedded product \(\prod_i G_{\mathbb F}(r_i,m_i)\) of dimension \(\beta\sum_i r_i(m_i-r_i)\). One can see embeddedness directly: in the graph chart around a commuting projection the condition of invariance by every eigenspace projection is exactly that the graph map has only within-eigenspace blocks. Distinct tuples give disjoint compact components. There are finitely many tuples. Uniform Grassmann measure is its normalized invariant smooth Riemannian volume (see \cite{Grassmann} for standard Grassmann geometry) (the Frobenius metric is invariant, and invariant probability is unique). In a smooth chart adapted to an embedded submanifold, the submanifold is a coordinate plane and volume density is bounded above and below on a smaller compact chart. Ambient Frobenius distance and coordinate distance are comparable on that chart. A finite cover of each compact component and a smaller local chart for the lower bound show that the probability of an ambient epsilon tube is bounded above and below by positive constants times \(\epsilon^{\mathrm{codim}}\). In the upper bound points sufficiently close to the submanifold lie in the chosen finite larger charts; in the lower bound restrict to a fixed tangential patch and a transverse ball. Taking the finite union gives the smallest codimension, namely \(\beta d_k\). The projection-rounding estimate transfers the tube estimate to \(F\) and then to \(B_I\). No claim about the coefficient or independence of different cuts is needed. This proves the cut-specific exponent for every field, spectrum and cut in the statement.
+
+For computation, \(r_i(m_i-r_i)\) is the sum of the first \(r_i\) increments in the strictly decreasing list \(m_i-1,m_i-3,\ldots,1-m_i\). Selecting the \(k\) largest increments globally automatically respects the prefix constraint in every group (ties between different groups may be broken arbitrarily), and no selection of \(k\) increments has greater sum. This proves the sorted formula, including all repeated eigenvalues.
+
+\subsection{Smallest codimension is the minimum degree of a multipartite graph}\label{smallest-codimension-is-the-minimum-degree-of-a-multipartite-graph}
+
+Interpret \(c(r)=k(n-k)-\sum_i r_i(m_i-r_i)\) as the number of cut edges in the complete multipartite graph with part sizes \(m_i\) and cut having \(r_i\) vertices in part \(i\). Put \(M=\max m_i\), \(\delta=n-M\). By complement symmetry take \(1\le k\le n/2\). Every vertex has degree at least \(\delta\). If \(k\le\delta\), at most \(k-1\) neighbors of any cut-side vertex lie within that side, so \(c(r)\ge k(\delta-k+1)=\delta+(k-1)(\delta-k)\ge\delta\).
+
+If \(k>\delta\), then \(M=n-\delta>n/2\ge k\) and \(n-k\ge k>\delta\). Both sides must contain at least one vertex of a largest part, since there are only \(\delta\) vertices outside it. Each of these \(\delta\) outside vertices has at least one edge to a vertex of the largest part on the opposite side; these edges are distinct. Thus \(c(r)\ge\delta\) also in this case. Equality is achieved by isolating one vertex of a largest part, yielding \(d_1=\delta\). This elementary graph property is classical; the contribution is its use as the exact smallest rare-cut exponent, not a new edge-connectivity theorem.
+
+\subsection{Bottleneck-to-total-cost comparison and the moment criterion}\label{bottleneck-to-total-cost-comparison-and-the-moment-criterion}
+
+Almost surely all couplings are nonzero (conditional sphere law as above, with real sphere in the real case). Define \(\tau=\min_{\varnothing\ne I\subsetneq[n]} B_I>0\). Every spanning tree crosses the minimizing cut, hence contains an edge of magnitude at most \(\tau\) and costs at least \(\tau^{-q}\). Conversely the graph retaining edges of magnitude at least \(\tau\) is connected: a disconnected component would define a cut all of whose magnitudes are strictly below \(\tau\). It has a spanning tree costing at most \((n-1)\tau^{-q}\). Thus \(\tau^{-q}\le M_{n,q}\le(n-1)\tau^{-q}\). For fixed \(n\), the probability \(\mathbb P(\tau\le\epsilon)\) is bounded below by the event for a singleton cut, and above by the sum over all finitely many nontrivial cuts. The cut geometry and multipartite cut bound give two-sided constants times \(\epsilon^{\beta\delta}\). The bottleneck bounds transfer this to the claimed tail of \(M\) (strict vs non-strict thresholds can be adjusted by a fixed factor). Integrating \(p\int_0^\infty t^{p-1}\mathbb P(M>t)\,dt\) proves the iff criterion, including divergence at the boundary. In the nonscalar case no \(d_k=0\) is possible by the multipartite cut bound. This also shows why checking the inverse moment of one arbitrary matrix entry is insufficient: a tree can avoid isolated small entries, but not a whole weak cut.
+
+\section{Rank-one critical and supercritical limits}\label{rank-one-critical-and-supercritical-limits}
+
+For a complex Haar unitary and \(\Lambda=\mathrm{diag}(\lambda,0,\ldots,0)\), \(\lambda\ne0\), retain the original normalization \(X_{n,q}\). Write \(S_n=\sum_i E_i\), \(D_n=\max_i E_i\). The exact optimal star gives \[X_{n,2s}=(1-1/n)^s(S_n/n)^{2s}(\log n/D_n)^s\,\frac1n\left(\sum_i E_i^{-s}-D_n^{-s}\right).\] For each fixed \(s>0\) the prefactor tends to one in probability. The \(s<1\) case recovers the leading-order limit \(\Gamma(1-s)\) (indeed Theorem 1 gives L1). At \(s=1\), \(X_{n,2}/\log n\to1\) in probability. To prove this, \(Y=E^{-1}\) has survival function \(1-e^{-1/y}\sim 1/y\). Truncate at \(u_n=n\log n\): the probability any \(Y_i>u_n\) is \(O(1/\log n)\), the mean of \(Y\mathbf1_{Y\le u_n}\) is asymptotic to \(\log n\) by tail integration, and its second moment is \(O(u_n)\). The variance of the truncated normalized sum is \(O(1/\log n)\). The removed root term tends to zero after normalization.
+
+For \(s>1\), set \(\alpha=1/s\in(0,1)\). Then \(n^{1-s}X_{n,2s}\) converges in distribution to the positive stable law with Laplace transform \(\exp[-\Gamma(1-\alpha)t^\alpha]\). Indeed \(Y=E^{-s}\) has survival function \(1-e^{-y^{-\alpha}}\), and \[n\,\mathbb E(1-e^{-tY/n^s})=t\int_0^\infty e^{-tx} n(1-e^{-x^{-\alpha}/n})\,dx\to \Gamma(1-\alpha)t^\alpha\] by dominated convergence with bound \(n(1-e^{-x^{-\alpha}/n})\le x^{-\alpha}\). Independence gives the claimed Laplace limit for \(n^{-s}\sum Y_i\); the limiting transform is continuous at zero, so the Laplace continuity theorem applies. The prefactor and removed root are handled by Slutsky. At and above the transition the fixed-n mean is infinite by the moment threshold; no L1 convergence is claimed. This rank-one corollary applies standard heavy-tail limit theory to the exact star and is not an independent discovery of stable laws.
+
+
+\section{Implication for the quantum-control MST bound}
+\begin{corollary}
+For any sequence of deterministic nonscalar real spectra,
+\[
+ M_{n,1}\to0\text{ in probability}\quad\Longleftrightarrow\quad
+ \E M_{n,1}\to0\quad\Longleftrightarrow\quad \frac{v_n\log n}{n^3}\to\infty.
+\]
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:main}, every spectral subsequence has a further subsequence along which $X_{n,1}$ converges in $L^1$ to a number in $[1,\sqrt\pi]$. In particular the means are uniformly bounded asymptotically and the variables are asymptotically bounded away from zero in probability. If $n^{3/2}/\sqrt{v_n\log n}\to0$ this implies vanishing expectation and probability. If this scale does not vanish, extract a subsequence bounded below by a positive number, then a convergent mass-partition subsequence. On it the normalized tree cost converges in probability to a constant at least one, contradicting vanishing of the unnormalized cost.
+\end{proof}
+The criterion concerns the spanning-tree upper bound, not a necessary condition for the actual optimal transfer time. Under the isotropic control ensemble and rational independence assumptions in \cite{CMcontrol,CMnumerical}, the deterministic bound $\tau_{SS}\le(\pi/2)M_{n,1}$ yields the corresponding sufficient condition for time to vanish.
+
+For $\lambda_j=j^{3/2}$, Riemann sums give
+\[
+\frac{v_n}{n^3}\to\int_0^1 x^3\,dx-\left(\int_0^1x^{3/2}\,dx\right)^2=\frac14-\frac4{25}=\frac9{100},
+\]
+and $p_{n,1}=O(1/n)$. Therefore $\sqrt{\log n}\,M_{n,1}\to10/3$ in $L^1$. This recovers the constant discussed in \cite{CMnumerical}; it is included to connect the general theorem to the motivating model, not to claim priority over \cite{Vecer} or \cite{IRSI}. In the concentrated regime the new constant differs, although the order determined by variance remains the same.
+
+\section{Reproduction, checks and limitations}
+The companion code tests the deterministic graph bounds using exact rational arithmetic. On 80 labelled complete graphs of orders 2--6 (40 arbitrary rational costs and 40 product costs), exhaustive Pr\"ufer enumeration and Kruskal's algorithm give the same optima. All 320 root charges and 1,824 hub choices pass; these are nested checks, not independent graphs. The 23,056 enumerated trees are search objects, not new datasets. Separately, 620 exact weighted-variance instances verify both the pairwise expression and the normalized convex-mixture identity. These checks validate finite algebra, not the limiting theorem.
+
+We sample 320 full complex Haar matrices by phase-corrected Gaussian QR at dimensions 24, 64, 160 and 384, using five spectral families and 16 replicates per dimension and family. Three inverse powers ($q=0.5,1,1.5$) reuse the same matrix and tree; all 960 nested comparisons verify the graph sandwich. Independent maximum-spanning-tree Prim and SciPy/Kruskal implementations agree to a maximum normalized discrepancy $4.44\times10^{-16}$; the maximum normalized row-radius discrepancy is $8.02\times10^{-15}$. All 64 rank-one matrices agree with the exact optimal-star expression (at each of the three powers, within numerical tolerance). These are floating-point diagnostic checks, not formal proofs or estimates of a universal convergence rate. The raw samples and seed are provided.
+
+\begin{table}[ht]
+\centering
+\caption{Representative diagnostics for $n=384$, $q=1$. Each row is a mean of 16 actual Haar matrices. SE is the empirical standard error, not a certified error bound. The last column is the analytical limiting constant.}
+\label{tab:diagnostics}
+\begin{tabular}{lrrrr}
+\toprule
+Spectrum & mean $X_{n,1}$ & SE & mean row surrogate & limit\\
+\midrule
+Polynomial & 0.98781 & 0.00107 & 1.00212 & 1.00000\\
+Rank one & 1.68627 & 0.03336 & 1.77173 & 1.77245\\
+Rank three & 1.11172 & 0.00587 & 1.14545 & 1.15124\\
+Half spike + diffuse & 1.03651 & 0.00221 & 1.07404 & 1.07179\\
+Diffuse sparse & 0.99412 & 0.00124 & 1.01833 & 1.00000\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Revision 2 adds a second exact verifier: 259 nontrivial multiplicity partitions in dimensions 2--12, with 71,211 nested cut allocations and 2,309 cut-size optima; 58 labelled multipartite graph patterns with 7,968 cut subsets; 40 rational projection instances; 5,150 scalar rounding grid points; and 84 new graphs with 252 nested inverse-power checks and 2,964 enumerated cuts. The finite optimum computation is cross-checked by enumeration, dynamic programming and the sorted-increment formula; the new graphs use independent Prim and Kruskal algorithms. These are exact checks of algebra and combinatorics, not experimental proof of the tube-volume exponent. The two Lean modules address finite ordered-sum identities, rooted-charge inequalities, scalar rounding, the multipartite lower bound, marginal gains and a conditional bottleneck inequality (nine representative axiom audits, both active modules exit 0); the Haar measure, conditional laws, probability convergence, graph orientation existence, and full theorem assembly are analytical. See the acceptance record for the actually compiled source and original logs. Nothing in the finite experiments is used to infer the universal statement.
+
+The novelty search is bounded. Full textual versions of the motivating papers and \cite{Vecer} were inspected, including the latter's Section 3, Lemmas 6--8, Theorems 1, 2 and 4, Corollary 3, Section 8 and Appendix A. Direct PDF access/rendering was unavailable for some sources, and the linked \cite{IRSI} proof was not retrieved. Searches for product-graph and Haar-dependent MST results, weighted Dirichlet spectral laws, Grassmannian invariant-subspace small balls, and cut/multiplicity exponents did not locate an identical statement for the new theorems. Classical independent-edge MST constants \cite{Frieze,Avram} do not by themselves supply these dependent reciprocal-cost tail statements. No claim of exhaustive priority is made. The uniform rate concerns complex Haar and fixed $0<q<2$; the real-field extension here is a fixed-dimensional tail theorem only. Tail constants may depend on dimension and spectral gaps. General-spectrum fluctuations, exact first correction outside the known bounded case, and arbitrary-spectrum high-dimensional asymptotics at and above $q=2$ remain open. The work is AI-assisted and not independently peer reviewed; no academic grade, author identity, affiliation or journal acceptance is asserted.
+
+\begin{thebibliography}{9}
+\bibitem{CMcontrol} T. Chambrion and C. Mendico, Vanishing control times for single-input bilinear quantum systems under rapid drift spectral growth, arXiv:2611.12502v2 (2026). \url{https://arxiv.org/abs/2611.12502}.
+\bibitem{CMnumerical} T. Chambrion and C. Mendico, Numerical investigation of a MST conjecture for random Haar matrices, arXiv:2611.14091v1 (2026). \url{https://arxiv.org/abs/2611.14091}.
+\bibitem{Vecer} J. Ve\v{c}e\v{r}, Frieze's $\zeta(3)$ and the Avram--Bertsimas constant under Haar conjugation, arXiv:2611.31583v1 (23 Nov. 2026). \url{https://arxiv.org/abs/2611.31583}. Full textual version consulted in revision 2.
+\bibitem{IRSI} Institute for Recursive Self Improvement, Critical Haar MST weight tends to zero (12 Nov. 2026), \url{https://irsi.ai/notes/haar-mst-critical/}. AI-developed note; indexed scope and method description consulted.
+\bibitem{Meckes} E. S. Meckes, \emph{The Random Matrix Theory of the Classical Compact Groups}, Cambridge University Press, 2019.
+\bibitem{Grassmann} T. Bendokat, R. Zimmermann and P.-A. Absil, A Grassmann manifold handbook: basic geometry and computational aspects, \emph{Advances in Computational Mathematics} (2024), doi:10.1007/s10444-023-10090-8.
+\bibitem{Frieze} A. M. Frieze, On the value of a random minimum spanning tree problem, \emph{Discrete Applied Mathematics} 10 (1985), 47--56.
+\bibitem{Avram} F. Avram and D. Bertsimas, The minimum spanning tree constant in geometrical probability and under the independent model: a unified approach, \emph{Annals of Applied Probability} 2 (1992), 113--130.
+\end{thebibliography}
+\end{document}
